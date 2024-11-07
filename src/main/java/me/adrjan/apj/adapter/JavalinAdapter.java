@@ -1,6 +1,5 @@
 package me.adrjan.apj.adapter;
 
-import com.google.gson.Gson;
 import io.javalin.Javalin;
 import io.javalin.http.HandlerType;
 import io.javalin.http.HttpStatus;
@@ -20,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 public class JavalinAdapter {
 
     private final Javalin javalin;
-    private final Gson gson;
     private final EndPointHandler apiHandler;
     private SecurityHandler securityHandler;
 
@@ -33,15 +31,15 @@ public class JavalinAdapter {
         javalin.addHandler(handlerType, apiEndpoint.path(), context -> context.future(() -> CompletableFuture.supplyAsync(() -> {
             if (this.securityHandler.handle(method, context) != SecurityResponse.ACCEPT) {
                 context.status(HttpStatus.UNAUTHORIZED);
-                return this.gson.toJson(new RequestResult(HttpStatus.UNAUTHORIZED, null));
+                return new RequestResult(HttpStatus.UNAUTHORIZED, null);
             }
             RequestResult processorResult = this.apiHandler.handle(context, instance, method);
             if (processorResult.status() != HttpStatus.OK) {
                 context.status(processorResult.status());
-                return this.gson.toJson(new RequestResult(processorResult.status(), null));
+                return new RequestResult(processorResult.status(), null);
             }
             context.status(HttpStatus.OK);
-            return this.gson.toJson(apiEndpoint.rawResponse() ? processorResult.body() : processorResult);
-        }).thenAcceptAsync(context::json)));
+            return apiEndpoint.rawResponse() ? processorResult.body() : processorResult;
+        }).thenAccept(context::json)));
     }
 }

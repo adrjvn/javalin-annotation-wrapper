@@ -1,9 +1,12 @@
 package me.adrjan.apj.test;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
+import io.javalin.json.JavalinJackson;
 import me.adrjan.apj.Apj;
 import me.adrjan.apj.annotation.ApiEndpoint;
 import me.adrjan.apj.annotation.Parameter;
@@ -13,7 +16,11 @@ import me.adrjan.apj.rest.EndPointProvider;
 public class BootstrapTest {
 
     public static void main(String[] args) {
-        Javalin javalin = Javalin.create().start(2137);
+        Javalin javalin = Javalin.create(config -> {
+            JavalinJackson javalinJackson = new JavalinJackson();
+            javalinJackson.getMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            config.jsonMapper(javalinJackson);
+        }).start(2137);
         Apj apj = new Apj(new Gson(), javalin);
         apj.getEndpointRegistry().registerEndpoint(new TestEndpoint());
     }

@@ -22,7 +22,7 @@ public class Apj {
         this.gson = gson;
         this.securityFactory = new SecurityFactory();
         this.endpointSecurityHandler = new EndpointSecurityHandler(new SecurityFactory());
-        this.endpointRegistry = new EndpointRegistry(new JavalinAdapter(javalin, this.gson
+        this.endpointRegistry = new EndpointRegistry(new JavalinAdapter(javalin
                 , new ApiHandler(this.gson)
                 , new EndpointSecurityHandler(new SecurityFactory())));
     }
