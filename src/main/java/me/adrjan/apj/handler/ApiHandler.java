@@ -25,12 +25,18 @@ public class ApiHandler implements EndPointHandler {
             try {
                 if (context.body().isEmpty())
                     return new RequestResult(HttpStatus.UNPROCESSABLE_CONTENT, null);
-                return new RequestResult(HttpStatus.OK, method.invoke(instance, this.processParameters(true, context, method)));
+                Object object = method.invoke(instance, this.processParameters(true, context, method));
+                if (object == null)
+                    return new RequestResult(HttpStatus.NOT_FOUND, null);
+                return new RequestResult(HttpStatus.OK, object);
             } catch (Exception e) {
                 return new RequestResult(HttpStatus.UNPROCESSABLE_CONTENT, null);
             }
         }
-        return new RequestResult(HttpStatus.OK, method.invoke(instance, this.processParameters(false, context, method)));
+        Object object = method.invoke(instance, this.processParameters(false, context, method));
+        if (object == null)
+            return new RequestResult(HttpStatus.NOT_FOUND, null);
+        return new RequestResult(HttpStatus.OK, object);
     }
 
     @SneakyThrows
