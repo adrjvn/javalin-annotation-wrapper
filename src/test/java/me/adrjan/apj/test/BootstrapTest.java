@@ -6,12 +6,16 @@ import com.google.gson.Gson;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
+import io.javalin.http.HttpStatus;
 import io.javalin.json.JavalinJackson;
+import io.javalin.validation.JavalinValidation;
 import me.adrjan.apj.Apj;
 import me.adrjan.apj.annotation.ApiEndpoint;
 import me.adrjan.apj.annotation.Parameter;
 import me.adrjan.apj.annotation.RequestBody;
 import me.adrjan.apj.rest.EndPointProvider;
+
+import java.util.UUID;
 
 public class BootstrapTest {
 
@@ -21,6 +25,7 @@ public class BootstrapTest {
             javalinJackson.getMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
             config.jsonMapper(javalinJackson);
         }).start(2137);
+        JavalinValidation.register(UUID.class, UUID::fromString);
         Apj apj = new Apj(new Gson(), javalin);
         apj.getEndpointRegistry().registerEndpoint(new TestEndpoint());
     }
@@ -45,15 +50,25 @@ public class BootstrapTest {
             return testObject;
         }
 
+        //        @ApiEndpoint(
+//                path = "/cos/{cos}",
+//                type = HandlerType.GET,
+//                rawResponse = true
+//        )
+//        public String cosEndpoint(Context context, @Parameter("cos") String cos, @Parameter(value = "aa", type = Parameter.Type.QUERY) int aa) {
+//            System.out.println("cos " + cos);
+//            System.out.println("aa " + aa);
+//            return cos;
+//        }
         @ApiEndpoint(
                 path = "/cos/{cos}",
                 type = HandlerType.GET,
                 rawResponse = true
         )
-        public String cosEndpoint(Context context, @Parameter("cos") String cos, @Parameter(value = "aa", type = Parameter.Type.QUERY) int aa) {
+        public String cosEndpoint(Context context, @Parameter("cos") String cos, @Parameter(value = "aa", type = Parameter.Type.QUERY) UUID aa) {
             System.out.println("cos " + cos);
-            System.out.println("aa " + aa);
-            return cos;
+            System.out.println("aa " + aa.toString());
+            return null;
         }
 
         @ApiEndpoint(
