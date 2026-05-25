@@ -1,12 +1,12 @@
 # Javalin Annotation Wrapper
 
-`javalin-annotation-wrapper` to lekka biblioteka zaprojektowana w celu uproszczenia tworzenia interfejsów API REST za pomocą Javalin, wykorzystując adnotacje, podobnie jak frameworki takie jak Spring Boot. Umożliwia programistom definiowanie punktów końcowych API, obsługę parametrów żądań i zarządzanie treścią żądań za pomocą deklaratywnych adnotacji, redukując powtarzalny kod i poprawiając czytelność.
+`javalin-annotation-wrapper` to lekka biblioteka zaprojektowana w celu uproszczenia tworzenia interfejsów API REST za pomocą Javalin, wykorzystując adnotacje, podobnie jak frameworki takie jak Spring. Umożliwia programistom definiowanie punktów końcowych API, obsługę parametrów żądań i zarządzanie treścią żądań za pomocą deklaratywnych adnotacji, redukując powtarzalny kod i poprawiając czytelność.
 
 ## Funkcje
 
-*   **Definicja punktów końcowych oparta na adnotacjach**: Definiuj metody HTTP, ścieżki i inne właściwości punktów końcowych bezpośrednio w metodach obsługujących żądania.
+*   **Definicja endpoint'ów oparta na adnotacjach**: Definiuj metody HTTP, ścieżki i inne właściwości endpoint'ów za pomocą adnotacji bezpośrednio w metodach obsługujących żądania.
 *   **Automatyczne wiązanie parametrów**: Łatwo wiąż parametry ścieżki, parametry zapytania i zawartość ciała żądania z argumentami metod.
-*   **Zintegrowane bezpieczeństwo**: Zapewnia mechanizm kontroli bezpieczeństwa na poziomie punktu końcowego za pomocą niestandardowych implementacji `SecurityProvider`.
+*   **Zintegrowane bezpieczeństwo**: Zapewnia mechanizm kontroli bezpieczeństwa na poziomie endpoint'ów za pomocą implementacji `SecurityProvider`.
 *   **Integracja z Javalin**: Bezproblemowo integruje się z systemem routingu Javalin.
 *   **Obsługa JSON**: Wykorzystuje Gson do automatycznej serializacji i deserializacji treści żądań i odpowiedzi.
 
@@ -14,7 +14,7 @@
 
 Biblioteka działa poprzez skanowanie klas w poszukiwaniu określonych adnotacji i dynamiczne rejestrowanie ich w instancji Javalin.
 
-1.  **`@ApiEndpoint`**: Oznacza metodę jako punkt końcowy API, określając jej ścieżkę HTTP, typ (GET, POST, PUT, DELETE itp.) oraz opcjonalne wymagania bezpieczeństwa.
+1.  **`@ApiEndpoint`**: Oznacza metodę jako endpoint API, określając jej ścieżkę HTTP, typ (GET, POST, PUT, DELETE) oraz opcjonalne wymagania bezpieczeństwa.
 2.  **`@Parameter`**: Używana na parametrach metody do wyodrębniania wartości ze zmiennych ścieżki lub parametrów zapytania.
 3.  **`@RequestBody`**: Używana na parametrze metody, aby wskazać, że parametr powinien zostać wypełniony z ciała żądania HTTP (np. ładunku JSON).
 4.  **Klasa `Apj`**: Centralna klasa do inicjalizacji wrappera. Przyjmuje instancję `Gson` i instancję `Javalin`.
